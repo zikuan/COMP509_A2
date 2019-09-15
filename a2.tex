@@ -1,0 +1,233 @@
+\documentstyle[11pt,abstract]{article}
+\headheight 0pt
+\setlength{\textwidth}{6.25in}          
+\setlength{\oddsidemargin}{0in}   
+\setlength{\evensidemargin}{.25in}  
+\input math
+\newcommand{\rarrow}{\rightarrow}
+\newcommand{\darrow}{\leftrightarrow}
+\newcommand{\logequiv}{{\models =\!\!\!|}}
+\renewcommand{\phi}{\varphi}
+\begin{document}
+\pagestyle{empty}
+
+\begin{center}
+{\Large COMP 409\\
+Assignment No. 2}\\
+\bigskip
+{\bf Due date: In class - Sept.~26, 2019}
+\end{center}
+
+\noindent
+{\bf Note}:
+\begin{enumerate}
+\item
+The submitted assignment needs to be typeset in LaTeX.
+\item
+{\bf Teamwork}: You are expected to complete this assignment in pairs. 
+By signing your name on the assignment you are asserting
+that the work submitted was done collaboratively, and you have
+adhered to Rice University's Honor Code.
+At the very least, this entails:
+\begin{itemize}
+\item
+discussing each problem and agreeing on a sketch of the solution,
+\item
+reviewing the written solutions for technical correctness and
+typographical errors,
+\item
+doing a joint codewalk over all written programs,
+\item
+dividing labor equally (roughly), and
+\item
+being able to explain every answer as if it is your own answer.
+\end{itemize}
+\item
+Note on the submission the total number of hours put in by
+each partner separately and by the two partners together.
+\end{enumerate}
+
+\bigskip
+\noindent
+{\sf Propositional Semantics}:
+\begin{enumerate}
+%\item
+%Let $\varphi$ be a formula and let $\tau$ be a truth assignment.
+%Show that $\tau \models \varphi$ iff $\varphi(\tau)=1$ iff
+%$\tau\in\mbox{models}(\varphi)$.
+\item
+Implement a {\em truth evaluator\/} $\mbox{\sf eval}(\phi,\tau)$, 
+which evaluates whether a formula $\phi$ holds for a truth assignment
+$\tau$. Use the evaluator to answer the following question:
+\begin{quote}
+Let $\alpha$ be the formula:
+\[
+\begin{array}{l}
+((p_1 \rightarrow (p_2 \wedge p_3)) \wedge 
+((\neg p_1) \rightarrow (p_3 \wedge p_4))).
+\end{array}
+\]
+Let $\beta$ be the formula:
+\[
+\begin{array}{l}
+((p_3 \rightarrow (\neg p_6)) \wedge 
+((\neg p_3) \rightarrow (p_4 \rightarrow p_1))).
+\end{array}
+\]
+Let $\gamma$ be the formula:
+\[
+\begin{array}{l}
+((\neg (p_2 \wedge p_5)) \wedge (p_2 \rightarrow p_5))
+\end{array}
+\]
+Let $\delta$ be the formula:
+\[
+\begin{array}{l}
+(\neg (p_3 \rightarrow p_6))
+\end{array}
+\]
+Evaluate the formula $\psi$
+\[
+\begin{array}{l}
+((\alpha \wedge (\beta \wedge \gamma)) \rightarrow \delta)
+\end{array}
+\]
+under the truth assignment $I_1$, 
+where $I_1(p_1)=I_1(p_3)=I_1(p_5)=0$ 
+and $I_1(p_2)=I_1(p_4)=I_1(p_6)=1$, as well as
+under the truth assignment $I_2$, 
+where $I_2(p_1)=I_2(p_3)=I_2(p_5)=1$ 
+and $I_2(p_2)=I_2(p_4)=I_2(p_6)=0$.
+\end{quote}
+\end{enumerate}
+
+\noindent
+{\sf Validity}: 
+\begin{enumerate}
+\item
+Prove the validity of the following principles:
+\begin{enumerate}
+\item
+$(((p\rightarrow q) \rightarrow p)\rightarrow p)$  - Peirce's  Law
+\item
+$(false \rightarrow p)$ - Ex Falso Quolibet (Here $false$ is a
+formula that is always false.)
+\item
+$((\neg p) \vee p$) : Excluded Middle (``Tertium Non Datur'')
+\item
+$((p\rightarrow q) \vee p)$: Weak Excluded Middle
+\end{enumerate}
+\item
+Prove \emph{Disjunctional Propositional Completeness}:
+if $\models (\alpha\vee\beta)$ and $AP(\alpha)\cap AP(\beta)=\emptyset$,
+then $\models\alpha$ or $\models\beta$
+\end{enumerate}
+
+\noindent
+{\sf Logical Implication}:
+\begin{enumerate}
+\item
+A binary connective $\circ$ is \emph{commutative} if
+$(\theta\circ\psi)$ is logically equivalent to $(\psi\circ\theta)$;
+it is \emph{associative} if
+$((\varphi\circ\theta)\circ\psi)$ is logically equivalent to 
+$(\varphi\circ(\theta\circ\psi))$.
+
+Analyze the binary connectives $\wedge$, $\vee$, $\rightarrow$,
+and $\leftrightarrow$ to see whether thet are commutative and
+associative. Prove your claims.
+\item
+Prove de Morgan's Laws
+\begin{itemize}
+\item
+$\models ((\neg(p\wedge q)) \darrow ((\neg p) \vee (\neg q))))$
+\item
+$\models ((\neg(p\vee q)) \darrow ((\neg p) \wedge (\neg q))))$
+\end{itemize}
+\item
+Show that logical and material equivalence coincide, that is,
+$\varphi \logequiv \psi$ iff $\models (\varphi\leftrightarrow\psi)$.
+\item
+Show that $\varphi\models\psi$ iff $(\varphi\wedge\neg\psi)$ is not
+satisfiable.
+\item
+Prove that logical implication is reflexive, transitive, but not symmetric.
+Prove that logical equivalence is an equivalence relation.
+\item
+Show that if $\phi$ and $\psi$ are logically equivalent and $\phi$ is
+valid, then $\psi$ is valid.
+\item
+Which of the following two sentences implies the other?
+
+$$(p \leftrightarrow (q \leftrightarrow r)),$$
+$$((p\wedge (q \wedge r))\vee((\neg p)\wedge ((\neg q)\wedge
+(\neg r)))).$$
+
+\item
+Show that $\Sigma,\alpha \models \beta$ 
+iff $\Sigma \models (\alpha \rightarrow \beta)$ 
+(Note: $\Sigma,\alpha$ is a shorthand for $\Sigma\cup\{\alpha\}$.)
+
+\item
+Prove or refute the following statements (here $\Sigma$ is a set of
+formulas):
+\begin{itemize}
+\item
+If either $\Sigma \models \alpha$ or $\Sigma \models \beta$, then
+$\Sigma \models (\alpha \vee \beta)$.
+\item
+If $\Sigma \models (\alpha \vee \beta)$, then
+either $\Sigma \models \alpha$ or $\Sigma \models \beta$.
+\end{itemize}
+
+\item
+A set $\Sigma$ of formulas is {\em independent\/} if no member $\sigma$
+of $\Sigma$ is implied by $\Sigma - \{\sigma\}$.
+Show that a finite set of formulas always has an equivalent
+independent subset, but this need not hold for an infinite set of
+formulas.
+\end{enumerate}
+
+\bigskip
+\noindent
+{\sf Substitutions}:
+
+The result of {\em substituting\/} a formula $\theta$
+{\em for\/} a proposition $p$ {\em in\/} a formula $\phi$,
+denoted $\phi[p \mapsto \theta]$, is defined as follows.
+\begin{itemize}
+\item
+$p[p \mapsto \theta]=\theta$
+\item
+$q[p \mapsto \theta]=q$ for $q \ne p$.
+\item
+$(\neg\phi)[p \mapsto \theta]=(\neg\phi[p \mapsto \theta])$
+\item
+$(\phi \circ \psi)[p \mapsto \theta]=
+(\phi [p \mapsto \theta] \circ \psi [p \mapsto \theta])$
+(here $\circ$ denoted an arbitrary binary connective)
+\end{itemize}
+Prove the following (use induction, but carefully!):
+\begin{enumerate}
+\item
+If $\phi$ is valid, then $\phi[p \mapsto \theta]$ is valid.
+\item
+If $\alpha$ and $\beta$ are logically equivalent, then
+$\phi[p \mapsto \alpha]$ and
+$\phi[p \mapsto \beta]$ are logically equivalent.
+\end{enumerate}
+
+\bigskip
+\noindent
+{\sf Puzzle}:
+
+Three boxes are presented to you. One contains gold, the other two
+are empty. Each box has imprinted on it a clue as to its contents;
+the clues are (Box 1) ``The gold is not here'', 
+(Box 2) ``The gold is not here'', and 
+(Box 3) ``The gold is in Box 2''.  Only one message is true; 
+the other two are false. Which box has the gold?
+
+Formalize this puzzle and solve it using propositional logic.
+
+\end{document}
