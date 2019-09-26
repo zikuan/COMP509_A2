@@ -1,0 +1,340 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb}
+\usepackage{MnSymbol}
+\usepackage{listings}
+\usepackage{graphicx}
+\graphicspath{{./}}
+\renewcommand{\phi}{\varphi}
+
+\title{COMP 409: Assignment 2}
+
+\author{Partner 1 and Partner 2}
+%Replace Partner 1 and 2 with your names.
+
+\begin{document}
+\maketitle
+
+
+\subsubsection*{Hours Worked} 
+%Replace Partner 1 and 2 with your names and replace X, Y and Z with the corresponding number of hours you spent on the homework working alone and together.
+
+\noindent\emph{Jointly}: 5 hours
+
+\noindent\emph{Yushu Liu}: 6 hours
+
+\noindent\emph{Zikuan Zhang}: 6 hours
+
+\newpage
+\section*{Propositional Semantics}
+%Write your solution to problem 1 here. 
+\begin{center}
+	\includegraphics[width=\textwidth]{./semantics.png}
+\end{center}
+\begin{lstlisting}[language=bash]
+>stack ghci semantics.hs
+
+*Main> evaluate psi i1
+True
+*Main> evaluate psi i2
+True
+\end{lstlisting}
+
+\newpage
+\section*{Validity}
+%Write your solution to problem 2 here.
+\subsection*{Problem 1}
+\subsubsection*{(a)}
+Peirce's Law: 
+\begin{align*}
+    models((p \rightarrow q) \rightarrow p)) 
+    & = (2^{prop} - models(p \rightarrow q) )\cup models(p)\\
+    & = ((2^{prop} - (2^{prop} - models(p))\cup models(q))\cup models(p)\\
+    & = ((2^{prop} - (2^{prop} - models(p)))\cap (2^{prop}-models(q)))\cup models(p)\\
+    & =(models(p) \cap (2^{prop} - models(q)) \cup models(p)\\
+\end{align*}
+So we have: 
+\begin{align*}
+     models((p \rightarrow q) \rightarrow p)) \subseteq models(p)\\
+     models((p \rightarrow q) \rightarrow p)) \models p\\
+\end{align*}
+Then $(((p \rightarrow q) \rightarrow p))\rightarrow p)$ is valid (by lemma  of logical implication and material implication).
+\subsubsection*{(b)}
+Ex Falso quolibet:
+\begin{align*}
+    models(false \rightarrow p) & = (2^{prop} - models(false)) \cup models(p)\\
+    & =2^{prop} \cup models(p) \\
+    & = 2^{prop}
+\end{align*}
+So the given formula is valid. 
+\subsubsection*{(c)}
+Excluded Middle:
+\begin{align*}
+    models(\neg p \vee p) &= models((\neg p)) \cup models(p) \\
+    & = (2^{prop} - models(p)) \cup modles(p)\\
+    & = 2^{prop}
+\end{align*}
+So the given formula is valid. 
+\subsubsection*{(d)}
+Weak Excluded Middle:
+\begin{align*}
+    models( (p \rightarrow q) \vee p) &= models(p \rightarrow q) \cup models(p) \\
+    & = (2^{prop} - models(p)) \cup models(q) \cup models (p)\\
+    & = 2^{prop}
+\end{align*}
+So the given formula is valid.
+\subsection*{Problem 2}
+We can prove the following statement: \\
+If $\nvDash \alpha$ and $\nvDash \beta$ and $AP(\alpha) \cap AP(\beta) = \emptyset$, then $\nvDash (\alpha \vee \beta)$.\\
+which is equivalent to the original statement since it is its contrapositive.\\[5pt]
+If $\nvDash \alpha$ and $\nvDash \beta$, by definition there must exist at least one $\tau_{\alpha}$ and $\tau_{\beta}$ satisfying the following condition: \\
+(1): $\tau_{\alpha} \in 2^{AP(\alpha)}$ and  $\tau_{\beta} \in 2^{AP(\beta)}$ \\
+(2): $\tau_{\alpha} \nvDash \alpha$ and $\tau_{\beta} \nvDash \beta$\\
+Let $\tau = \tau_{\alpha} \cup \tau_{\beta}$. Since $AP(\alpha) \cap AP(\beta) = \emptyset$, then in $\tau \in 2^{prop}$, the assignment of entirely $AP(\alpha)$ would be according to $\tau_{alpha}$. Similarly the assignment of entirely $AP(\beta)$ would be according to $\tau_{beta}$.\\
+Then it must be the case that $\tau \nvDash \alpha$ and $\tau \nvDash \beta$ according to relevance lemma, therefore $\tau \nvDash (\alpha \vee \beta)$, and $\nvDash (\alpha \vee \beta)$.
+Thus proved. 
+\newpage
+\section*{Logic Implication}
+%Write your solution to problem 3 here. 
+\subsection*{Problem 1}
+$\wedge$\textbf{ is commutative and associative}:\\
+Since set intersection is commutative, we have the following:\\[5pt]
+\begin{align*}
+models(\theta \wedge \phi)
+&= models(\theta) \cap models(\phi) \\
+&= models(\phi) \cap models(\theta) \\
+&= models(\phi \wedge \theta)
+\end{align*}
+Similarly, since set intersection is associative: 
+\begin{align*}
+models((\theta \wedge \phi)\wedge \gamma)
+&= models(\theta\wedge \phi) \cap models(\gamma) \\
+&= models(\theta) \cap models(\phi) \cap models(\gamma) \\
+&= models(\theta) \cap models(\phi \wedge \gamma) \\
+&= models(\theta \wedge (\phi \wedge \gamma))\\
+\end{align*}
+Thus proved. \\[10pt]
+$\vee$\textbf{ is commutative and associative}:\\
+Since set union is commutative, we have the following:\\[5pt]
+\begin{align*}
+models(\theta \vee \phi)
+&= models(\theta) \cup models(\phi) \\
+&= models(\phi) \cup models(\theta) \\
+&= models(\phi \vee \theta)
+\end{align*}
+Similarly, since set union is associative: 
+\begin{align*}
+models((\theta \vee \phi)\vee \gamma)
+&= models(\theta\vee\phi) \cup models(\gamma) \\
+&= models(\theta) \cup models(\phi) \cup models(\gamma) \\
+&= models(\theta) \cup models(\phi \vee \gamma) \\
+&= models(\theta \vee (\phi \vee \gamma))\\
+\end{align*}
+Thus proved.\\[10pt]
+$\rightarrow$ \textbf{is not commutative or associative:} \\
+Define a world with following mapping: p = 1, q = 0. Then we have: 
+\begin{align*}
+    p \rightarrow q = 0\\
+    q \rightarrow p = 1\\
+\end{align*}
+Since the two statement above is not logically equivalent , $\rightarrow$ is not commutative.\\[3pt]
+Similarly define a world with following mapping: p = 0, q = 0, r = 0. Then we have: 
+\begin{align*}
+    ((p \rightarrow q) \rightarrow r)= 0\\
+    (p \rightarrow(q \rightarrow r)) = 1\\
+\end{align*}
+Since the two statement above is not logically equivalent , $\rightarrow$ is not associative.\\[20pt]
+$\longleftrightarrow$ \textbf{is commutative and associative:} \\
+Since set intersection and set union is commutative, we have the following:\\[5pt]
+\begin{align*}
+models(\theta \leftrightarrow \phi)
+&= ((2^{prop} - models(\theta) \cap(2^{prop} - models(\phi))) \cup (models(\theta) \cap models(\phi))\\
+& = ((2^{prop} - models(\phi) \cap(2^{prop} - models(\theta))) \cup (models(\phi) \cap models(\theta))\\
+& = models(\phi \leftrightarrow \theta)
+\end{align*}
+Similarly, using the regrouping rule from set theory: 
+\begin{align*}
+&models((\theta \leftrightarrow \phi)\leftrightarrow \gamma \\
+&=models( \theta \leftrightarrow \phi) \cap models(\gamma)) \cup ((2^{prop} - models (\theta \leftrightarrow \phi)) \cap (2^{prop} - models(\gamma)))\\
+\end{align*}
+where,
+\begin{align*}
+models(\theta \leftrightarrow \phi) = ((2^{prop} - models(\theta) \cap(2^{prop} - models(\phi))) \cup (models(\theta) \cap models(\phi))\\
+\end{align*}
+We have: 
+\begin{align*}
+&models((\theta \leftrightarrow \phi)\leftrightarrow \gamma) \\
+& = (models( \theta \leftrightarrow \phi) \cap models(\gamma)) \cup ((2^{prop} - models (\theta \leftrightarrow \phi)) \cap (2^{prop} - models(\gamma)))\\
+& = (models( \theta) \cap models(\phi \leftrightarrow \gamma)) \cup ((2^{prop} - models( \theta)) \cap (2^{prop} - models((\phi \leftrightarrow \gamma)))\\
+& = models(\theta \leftrightarrow (\phi \leftrightarrow \gamma))
+\end{align*}
+Thus proved. 
+\subsection*{Problem 2}
+De Morgan's Law:\\ 
+By relevance lemma, for a propsition $\theta$ to be valid, we only need to show $models(\theta) = 2^{AP(\theta)}$. Since in the case of De Mogan's Law, $2^{AP(\theta)}$(for both statements) includes only 4 cases, we can list them as follow:
+
+\begin{center}
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+       & p & q & $((\neg((p \wedge q)) \leftrightarrow ((\neg p) \vee (\neg q))$ & $((\neg (p \vee q)) \leftrightarrow ((\neg p) \wedge (\neg q))$ \\ \hline
+Case 1 & 0 & 0 & 1         & 1        \\ \hline
+Case 2 & 0 & 1 & 1         & 1        \\ \hline
+Case 3 & 1 & 0 & 1         & 1        \\ \hline
+Case 4 & 0 & 0 & 1         & 1        \\ \hline
+\end{tabular}
+\end{center}
+Thus proved. 
+\subsection*{Problem 3}
+By definition, $\phi \rightmodels\leftmodels  \psi$ is equivalent to $\phi \models \psi$ and $\psi \models \phi$.\\
+By the lemma the statement above is also equivalent to $\models (\phi \rightarrow \psi)$ and $\models (\psi \rightarrow \phi)$, which by definition, is equivalent to $\models (\phi \leftrightarrow \psi)$
+\subsection*{Problem 4}
+We have the following logical equivalency: $(\phi \wedge \neg \psi)$ is not satisfiable if and only if $\neg(\phi \wedge \neg \psi)$ is valid. (by definition of satisfiable and valid).\\
+We then convert $\neg(\phi \wedge \neg \psi)$to $(\neg \phi \vee \psi)$ using de Morgan's Law.\\
+$(\neg \phi \vee \psi)$ is valid is logically equivalent to $\models(\neg \phi \vee \psi)$. By the definition of $\rightarrow$, we can rewrite $\models(\neg \phi \vee \psi)$ as $\models (\phi \rightarrow \psi)$. Then by the lemma of material and logical implication, $\models (\phi \rightarrow \psi) \Leftrightarrow \phi \models \psi$.\\[5pt]
+Thus proved. 
+\subsection*{Problem 5}
+For logical implication, let $\Phi, \Psi, \Theta \in 2^{FORM}$, we then have:\\[5pt]
+$\bullet$ If $models(\Phi) \subseteq models(\Phi)$, by definition $\Phi \models \Phi$. So it is reflexive.\\[3pt]
+$\bullet$ Let $\Phi \models \Psi$ and $\Psi \models \Theta$, then $models(\Phi) \subseteq models(\Psi)$ and $models(\Psi) \subseteq models(\Theta)$. We can use the fact that $\subseteq$ is transitive to get $models(\Phi) \subseteq models(\Theta)$, therefore $\Phi \models \Theta$. So it is transitive.\\[3pt]
+$\bullet$ Let $\Phi = (p \vee q)$ and $\Psi = (p \wedge q)$. Then $models(\Phi) = {(p,q)}$ and $models(\Phi) = {{p}, {q}, {p, q}}$. In this case, we have $models(\Phi) \subseteq models(\Psi)$ but $models(\Psi) \nsubseteq models(\Phi)$, therefore $\Phi \models \Psi$ and $\Psi \nvDash \Phi$. So it is not symmetric. \\[10pt]
+For logical equivalence, similarly:\\[5pt]
+$\bullet$ If $models(\Phi) = models(\Phi)$, by definition $\Phi \vDash \leftmodels \Phi$. So it is reflexive.\\[3pt]
+$\bullet$ Let $\Phi \models \leftmodels \Psi$ and $\Psi \models \leftmodels \Theta$, then $models(\Phi) = models(\Psi)$ and $models(\Psi) = models(\Theta)$. We can use the fact that $ = $ is transitive to get $models(\Phi) = models(\Theta)$, therefore $\Phi \models \Theta$. So it is transitive.\\[3pt]
+$\bullet$ Let $\Phi \models \leftmodels \Psi$, then $models(\Phi) = models(\Psi)$, $\Psi \models \leftmodels \Phi$. So it is symmetric.
+\subsection*{Problem 6}
+By definition of logical equivalency, since $\phi \models \leftmodels \psi$, $models(\phi) = models(\psi)$. By definition of validity, $models(\phi) = 2^{prop} = models(\psi)$, so $\psi$ is also valid. 
+\subsection*{Problem 7}
+Let the first sentence be $\phi$ and second sentence be $\psi$.\\[5pt]
+We have $models(\phi) = \{\{p\}, \{p,q,r\}, \{q\}, \{r\}\}$, and $models(psi) = \{\{p, q, r\}, \{\emptyset\}\}$. Since $models(\phi) \nsubseteq models(\psi)$ and $models(\psi) \nsubseteq models(\phi)$, neither sentence implies the other. 
+\newpage
+\subsection*{Problem 8}
+Proof:\\[10pt]
+By definition, we have $\Sigma \cup \{\alpha\} \models B$\\
+\begin{align*}
+    &\text{Iff } models(\Sigma \cup \{\alpha\}) \subseteq models(\beta)\\
+    &\text{Iff } models(\Sigma \cup \{\alpha\}) \subseteq models(\beta)\\
+    &\text{Iff } (models(\Sigma) \cap models(\alpha)) \cup (2^{prop} - models(\alpha)) \subseteq models(\beta) \cup (2^{prop} - models(\alpha))\\
+\end{align*}
+$\longrightarrow$:\\
+For arbitrary $\sigma \in models(\Sigma)$, we then try to prove it is always true that $\sigma \in (models(\Sigma) \cap models(\alpha)) \cup (2^{prop} - models(\alpha))$.It must either be the case of $\sigma \in models(\alpha)$ or $\sigma \notin models(\alpha)$. In first case $\sigma \in (models(\Sigma) \cap models(\alpha))$, and in second case $\sigma \in (2^{prop} - models(\alpha))$ by definition.\\[3pt]
+Following the partial proof above, using the transitivity of $\subseteq$, we have:
+\begin{align*}
+    &(models(\Sigma) \cap models(\alpha)) \cup (2^{prop} - models(\alpha)) \subseteq models(\beta) \cup (2^{prop} - models(\alpha))\rightarrow \\
+    &(models(\Sigma) \subseteq (2^{prop} - models(\alpha)) \cup models(\beta))\\
+\end{align*}
+$\longleftarrow$:\\
+We then prove that if $(models(\Sigma) \subseteq (2^{prop} - models(\alpha)) \cup models(\beta))$, then it must always be true that $(models(\Sigma) \cap models(\alpha)) \cup (2^{prop} - models(\alpha)) \subseteq models(\beta) \cup (2^{prop} - models(\alpha)$.\\
+Since $models(\Sigma) \cap models(\alpha) \subseteq models(\Sigma)$ and $models(\Sigma) \subseteq (2^{prop} - models(\alpha)) \cup models(\beta)$, it must be true that $models(\Sigma) \cap models(\alpha) \subseteq (2^{prop} - models(\alpha)) \cup models(\beta)$. Then the 2 set at left hand side are both contained by set at right hand side, and since both sides only has set union, the original statement must be true. \\[10pt]
+Therefor, we have that 
+\begin{align*}
+    &(models(\Sigma) \cap models(\alpha)) \cup (2^{prop} - models(\alpha)) \subseteq models(\beta) \cup (2^{prop} - models(\alpha))\Leftrightarrow \\
+    &(models(\Sigma) \subseteq (2^{prop} - models(\alpha)) \cup models(\beta))\\
+\end{align*}
+Then follow the incomplete proof above:
+\begin{align*}
+    & (models(\Sigma) \cap models(\alpha)) \cup (2^{prop} - models(\alpha)) \subseteq models(\beta) \cup (2^{prop} - models(\alpha))\\
+    & \text{Iff  } models(\Sigma) \subseteq (2^{prop} - models(\alpha)) \cup models(\beta)\\
+    & \text{Iff  } models(\Sigma) \subseteq models(\alpha \rightarrow \beta)\\
+    & \text{Iff  } \sigma \models (\alpha \rightarrow \beta)
+\end{align*}
+Thus proved. 
+\subsection*{Problem 9}
+$\bullet$ If either $\sigma \models \alpha$ or $\sigma \models \beta$, then: 
+\begin{align*}
+    &models(\Sigma) \subseteq models (\alpha) \text{ or } models(\Sigma) \subseteq models(\beta)\\
+    &models(\Sigma) \subseteq models(\alpha) \cup models(\beta)\\
+    &models(\Sigma) \subseteq models(\alpha \vee \beta)\\
+\end{align*}
+So the first statement is true.\\[5pt]
+$\bullet$ Let Prop = \{p, q\}. We define $\alpha = p\vee (\neg q)$, $\beta = (p \rightarrow q)$, $\Sigma = p$, we then have: 
+\begin{align*}
+    models(\alpha) = \{\{p\}, \{q\}\}\\
+    models(\beta) = \{\{q\}, \{p,q\}, \emptyset\}\\
+    models(\alpha \vee \beta) = \{\emptyset, \{p\}, \{q\},\{p,q\}\}\\
+    models(\Sigma) = \{\{p\}, \{p, q\}\}\\
+\end{align*}
+Then it is clear that $models(\Sigma) \subseteq models(\alpha \vee \beta$, but $models(\Sigma) \nsubseteq models(\alpha)$ and $models(\Sigma) \nsubseteq models(\beta)$. So the second statement if false. 
+\subsection*{Problem 10}
+$\bullet$ For finite set, we have:\\[5pt]
+Base Case: $\Sigma = \emptyset$, which must be independent since there's no formula in it.\\[5pt]
+Induction: 
+If $\Sigma$ itself is independent, then it is a independent subset of itself.\\[3pt]
+Otherwise by definition, there must exist at least one $\alpha$ such that $models(\Sigma - \alpha) \subseteq models(\alpha)$.Then we have the following equation: 
+\begin{equation*}
+    models(\Sigma) models((\Sigma - \alpha) \cup \alpha) = models(\Sigma - \alpha) \cap models(\alpha) = models(\Sigma - \alpha)
+\end{equation*}
+Therefore $\Sigma$ and $\Sigma - \alpha$ are equivalent, and the later is a proper subset of the former.Since there exist a independent subset, $\Sigma'$, that is logically equivalent to $\Sigma - \alpha$ and both of subset and logical equivalence are transitive relation, $\Sigma'$ must also be a logically equivalent subset of $\Sigma$.\\[10pt]
+$\bullet$ For infinite set, we can construct one as follow:\\[5pt]
+Let the infinite set be $\Theta = (\theta_1, \theta_2, ....)$, where we recursively define $\theta_1 = p_1$, $\theta_{n+1} = (\theta_{n} \vee p_{n+1})$.\\[3pt]
+Here, each $\theta_{n+1}$ is implied by $\theta_n$ so the only independent subset is the set contains only a single element and the empty set. However, any singleton is not logically equivalent to $\Theta$ since for any $\theta_{n}$ it does not imply $\theta_m$ for $m>n$, and empty set cannot imply any element of $\Theta$. Therefore, such infinite set does not have any independent logically equivalent subset. 
+
+\newpage
+
+\section*{Substitution}
+\subsection*{Statement 1:}\\
+\textbf{Proof:} \\
+$\forall \tau \in 2^{prop}, \phi, \theta \in {FORM}, p \in {PROP}$, we can construct a truth assignments $\sigma \in 2^{prop}$, where if $\tau(\theta) = 1, \, \sigma = \tau \cup \{p\} , \, else \, \sigma = \tau \setminus \{p\}, s.t. \, \tau(\phi[p \rightarrow \theta]) = \sigma(\phi)$. \\
+\textbf{Base:} \\
+Case 1: $\phi = p$, then 
+\begin{itemize}
+    \item if $\tau(\theta) = 1, \, \sigma = \tau \cup \{p\} , \tau(p[p \rightarrow \theta]) = \tau(\theta) = 1 = \sigma(p) = \sigma(\phi)$.
+    \item if $\tau(\theta) = 0, \, \sigma = \tau \setminus \{p\} , \tau(p[p \rightarrow \theta]) = \tau(\theta) = 0 = \sigma(p) = \sigma(\phi)$.
+\end{itemize}
+Case 2: $\phi = q$ and $p \neq q$, then $\tau(q[p \rightarrow \theta]) = \tau(q) = \sigma(q) = \sigma(\phi)$.\\
+\textbf{Inductive:} \\
+Case 3: $\phi = (\neg \phi_{0})$. Then 
+\begin{align*}
+    &\tau(p[p \rightarrow \theta])  \\
+    &= \tau((\neg \phi_{0})[p \rightarrow \theta])\\
+    &= \tau(\neg \phi_{0}[p \rightarrow \theta]) \\
+    &= \neg (\tau(\phi_{0}[p \rightarrow \theta]))\\
+    &= \neg(\sigma(\phi_{0}))\\
+    &= \sigma (\neg \phi_{0})\\
+    &= \sigma (\phi)
+\end{align*}
+Case 4: $\phi = (\gamma \circ \psi)$. Then 
+\begin{align*}
+    &\tau(p[p \rightarrow \theta])  \\
+    & = \tau((\gamma \circ \psi)[p \rightarrow \theta]) \\
+    & = \tau(\gamma[p \rightarrow \theta] \circ \psi[p \rightarrow \theta])\\
+    & = \tau(\gamma[p \rightarrow \theta]) \circ \tau(\psi[p \rightarrow \theta])\\
+    & = \sigma(\gamma) \circ \sigma (\psi)\\
+    & = \sigma(\gamma \circ \psi) \\
+    & = \sigma(\phi) \\
+\end{align*}
+Since $\phi$ is valid, then $\forall \sigma \in 2 ^ {PROP}, \sigma(\phi) = 1$. On the other hand, $\forall \tau \in 2 ^ {PROP}, \exists \tau \in 2 ^ {PROP}, \phi[p \rightarrow \theta] = \sigma(\phi) = 1$,  $\phi[p \rightarrow \theta]$ is also valid.
+\subsection*{Statement 2}
+$models(\alpha) = models(\beta)$  \\
+\textbf{Proof:} \\
+If $\alpha$ and $\beta$ are logically equivalent, then
+$\phi[p \mapsto \alpha]$ and
+$\phi[p \mapsto \beta]$ are logically equivalent. \\
+$models(\phi[p \mapsto \alpha]) = models(\phi[p \mapsto \beta])$. \\
+\textbf{Base:}
+\begin{itemize}
+    \item $\phi = p, models(p[p \mapsto \alpha]) = models(\alpha) = models(\beta) = models(p[p \mapsto \beta]). $
+    \item $\phi = q, models(q[p \mapsto \alpha]) = models(q) = models(q[p \mapsto \beta]). $
+\end{itemize}
+\textbf{Inductive:}\\
+\begin{itemize}
+    \item
+    $\phi = (\neg\psi), models(\phi[p \mapsto \alpha]) = models(\neg \psi[p \mapsto \alpha]) = 2^{PROP} \setminus models(\phi[p \mapsto \alpha]) = 2^{PROP} \setminus models(\phi[p \mapsto \beta]) = models(\neg \psi[p \mapsto \beta]) = models(\phi[p \mapsto \beta])$
+    \item
+    $\phi = (\psi_{0} \circ \psi_{1}), models(\phi[p \mapsto \alpha])= models(\psi_{0} [p \mapsto \alpha] \circ \psi_{1} [p \mapsto \alpha]) = models((\psi_{0} [p \mapsto \alpha]) \cup models(\psi_{0} [p \mapsto \alpha])) = models((\psi_{0} [p \mapsto \beta]) \cup models(\psi_{0} [p \mapsto \beta])) = models(\psi_{0} [p \mapsto \beta] \circ \psi_{1} [p \mapsto \beta]) = models(\phi[p \mapsto \beta])$.
+\end{itemize}
+
+
+\newpage
+\section*{Puzzle}
+%Write your solution to problem 5 here. 
+Let the statement $i^{th}$ box have the gold be $b_i$. Let the statement $i^{th}$ clue is true be $c_i$.\\[5pt]
+Since only one box have the gold, we have $((b_1 \vee b_2 \vee b_3) \wedge ( \neg (b_1 \wedge b_2) \wedge \neg (b_2 \wedge b_3) \wedge \neg (\b_3 \wedge b_1)))$.\\
+Since only one clue is true we have $((c_1 \vee c_2 \vee c_3) \wedge ( \neg (c_1 \wedge c_2) \wedge \neg (c_2 \wedge c_3) \wedge \neg (c_3 \wedge c_1)))$.\\
+And according to the clue, we have: $c_1 \Leftrightarrow \neg b_1$, $c_2 \Leftrightarrow \neg b_2$, and $c_3 \Leftrightarrow b_2$.\\[5pt]
+To solve the puzzle, we need to find a truth assignment that makes all statement stated above true. The only satisfying assignment is the following:
+\begin{equation*}
+    b_1 = 1, b_2 = 0, b_3 = 0, c_1 = 0, c_2 = 1, c_3 = 0
+\end{equation*}
+According to the statement definition, the first box contains the gold.
+
+
+\end{document}

@@ -4,11 +4,14 @@ data LogicExpr = V String
                  | Disjunction  LogicExpr LogicExpr 
                  | Implication  LogicExpr LogicExpr 
 
-alpha = Conjunction (Implication (V "p1") (Conjunction (V "p2") (V "p3"))) (Implication (Negation (V "p1")) (Conjunction (V "p3") (V "p4")))
+alpha = Conjunction (Implication (V "p1") (Conjunction (V "p2") (V "p3"))) 
+					(Implication (Negation (V "p1")) (Conjunction (V "p3") (V "p4")))
 
-beta = Conjunction (Implication (V "p3") (Negation (V "p6"))) (Implication (Negation (V "p3")) (Implication (V "p4") (V "p1"))) 
+beta = Conjunction (Implication (V "p3") (Negation (V "p6"))) 
+				   (Implication (Negation (V "p3")) (Implication (V "p4") (V "p1"))) 
 
-gamma = Conjunction (Negation (Conjunction (V "p2") (V "p5"))) (Implication (V "p2") (V "p5"))
+gamma = Conjunction (Negation (Conjunction (V "p2") (V "p5")))		
+					(Implication (V "p2") (V "p5"))
 
 delta = Negation (Implication (V "p3") (V "p6"))
 
